@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Gundo\ProductInfoAgent\Api\ChatInterface" type="Gundo\ProductInfoAgent\Model\Chat"/>
+
+    <type name="Gundo\ProductInfoAgent\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">ProductInfoAgent</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Magento\Framework\Logger\Handler\System</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Gundo\ProductInfoAgent\Api\Data\ProductInfoAgentInterface"
+                type="Gundo\ProductInfoAgent\Model\ProductInfoAgent"/>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="gundo_productinfoagent_module_test" xsi:type="object">
+                    Gundo\ProductInfoAgent\Console\Command\ModuleTest
+                </item>
+                <item name="gundo_productinfoagent_module_test_create" xsi:type="object">
+                    Gundo\ProductInfoAgent\Console\Command\ModuleTestCreate
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
