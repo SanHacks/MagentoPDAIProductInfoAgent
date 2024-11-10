@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Gundo\ProductInfoAgent\Model;
 
+use Exception;
 use Gundo\ProductInfoAgent\Api\ChatInterface;
 use Gundo\ProductInfoAgent\Helper\CollectAgentData\ApiDataCollection as LargeLanguageModelApi;
 use Gundo\ProductInfoAgent\Logger\Logger;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\EntityManager\EventManager;
 
 class Chat implements ChatInterface
 {
@@ -19,35 +19,32 @@ class Chat implements ChatInterface
     private ProductRepositoryInterface $productRepository;
 
     /**
-     * @var EventManager
-     */
-    private EventManager $eventManager;
-
-    /**
      * @var Logger
      */
     private Logger $logger;
 
     /**
+     * @param Logger $logger
      * @param LargeLanguageModelApi $api
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
-
+        Logger $logger,
         LargeLanguageModelApi      $api,
         ProductRepositoryInterface $productRepository
-    )
-    {
+    ) {
+        $this->logger = $logger;
         $this->api = $api;
         $this->productRepository = $productRepository;
     }
 
     /**
      * @param string $message
-     * @param null $productId
+     * @param int|null $productId
+     * @param int|null $customerId
      * @return array
-     * @throws NoSuchEntityException
      */
-    public function sendMessage(string $message, $productId = null): array
+    public function sendMessage(string $message, int $productId = null, int $customerId = null): array
     {
         try {
             $productData = '';
@@ -56,11 +53,10 @@ class Chat implements ChatInterface
                 $productData = $this->productData($productId);
             }
 
-            $response = $this->api->callProductAgent($message, $productData);
+            $response = $this->api->callProductAgent($message, $productData,$customer);
 
             return ['message' => $response];
-
-        } catch (NoSuchEntityException $e) {
+        } catch (Exception $e) {
             $this->logger->critical($e);
             return [];
         }
@@ -79,8 +75,9 @@ class Chat implements ChatInterface
             'details' => [
                 'description' => $product->getData('description'),
                 'product_name' => $product->getName(),
-                'price' => $product->getPrice(),
+                'price' => "ZAR". $product->getPrice(),
                 'short_description' => $product->getData('short_description'),
+                'productId' => $product->getId(),
             ]
         ];
     }

@@ -4,8 +4,11 @@ namespace Gundo\ProductInfoAgent\Model\Queue\Handler;
 
 class Handler
 {
-    public function execute()
+    /**
+     * @return void
+     */
+    public function execute(): void
     {
-        //TODO: implement method
+       print_r("This is Working!, Sort of....");
     }
 }

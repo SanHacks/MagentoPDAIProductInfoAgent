@@ -2,20 +2,15 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="productinfoagento_ai" resource="default" engine="innodb" comment="Product Info Agent">
-        <index referenceId="PRODUCTINFOAGENTO_AI_ID" indexType="btree">
-            <column name="id"/>
-        </index>
-        <index referenceId="PRODUCTINFOAGENTO_AI_ID" indexType="btree">
-            <column name="id"/>
-        </index>
         <column xsi:type="int" name="chat_id" unsigned="true" nullable="false" identity="true" comment="Record ID"/>
         <column xsi:type="int" name="user_id" unsigned="true" nullable="true" identity="false" comment="Chat User ID"/>
         <column xsi:type="datetime" name="created_at" nullable="true" on_update="false" comment="Created At"/>
         <column xsi:type="int" name="product_id" unsigned="true" nullable="true" identity="false"
                 comment="Chat Product ID"/>
         <column xsi:type="datetime" name="updated_at" nullable="true" on_update="true" comment="Updated At"/>
-        <column xsi:type="longtext" name="data" nullable="true" length="1000" comment="Data Collection"/>
-        <column xsi:type="text" name="message" nullable="true" length="500" comment="Response Text"/>
+        <column xsi:type="longtext" name="data_collection" nullable="true" comment="Data Collection"/>
+        <column xsi:type="text" name="message" nullable="true"  comment="Response Text"/>
+        <column xsi:type="text" name="model" nullable="true"  comment="LLM Model"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="chat_id"/>
         </constraint>

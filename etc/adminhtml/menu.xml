@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+            id="Gundo_ProductInfoAgent::productinfoagent_menu"
+            title="ProductInfo Agent"
+            module="Gundo_ProductInfoAgent"
+            resource="Gundo_ProductInfoAgent::productinfoagent_menu"
+            sortOrder="40"
+        />
+        <add
+            id="Gundo_ProductInfoAgent::chathistory"
+            title="Product Agent Chat History"
+            module="Gundo_ProductInfoAgent"
+            resource="Gundo_ProductInfoAgento::chathistory"
+            action="productinfoagent/productinfoagent/index"
+            parent="Gundo_ProductInfoAgent::productinfoagent_menu"
+        />
+    </menu>
+</config>

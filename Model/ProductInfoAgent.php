@@ -47,6 +47,20 @@ class ProductInfoAgent extends AbstractModel implements ProductInfoAgentInterfac
     }
 
     /**
+     * @param array|null $data
+     * @return ProductInfoAgentInterface
+     */
+    public function setDataCollection(?array $data): ProductInfoAgentInterface
+    {
+        return $this->setData(self::DATA, $data);
+    }
+
+    public function getDataCollection(): ?string
+    {
+        return $this->getData(self::DATA);
+    }
+
+    /**
      * Get the updated timestamp.
      *
      * @return string|null
@@ -151,6 +165,7 @@ class ProductInfoAgent extends AbstractModel implements ProductInfoAgentInterfac
         return $this->setData(self::ID, $chatId);
     }
 
+
     /**
      * Save the model and manage timestamps.
      *
@@ -170,8 +185,6 @@ class ProductInfoAgent extends AbstractModel implements ProductInfoAgentInterfac
 
         parent::save();
 
-        $this->_eventManager->dispatch('productinfoagent_model_saved', ['item' => $this]);
-
         return $this;
     }
 
@@ -183,5 +196,22 @@ class ProductInfoAgent extends AbstractModel implements ProductInfoAgentInterfac
     private function getCurrentTimestamp(): string
     {
         return (new \DateTime())->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * @param int|null $product
+     * @return self
+     */
+    public function setProductId(?int $product): ProductInfoAgentInterface
+    {
+        return $this->setData(self::PRODUCT, $product);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProductId(): ?string
+    {
+        return $this->getData(self::PRODUCT);
     }
 }

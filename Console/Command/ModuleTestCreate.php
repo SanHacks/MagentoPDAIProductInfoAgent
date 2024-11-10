@@ -52,7 +52,12 @@ class ModuleTestCreate extends Command
 
         try {
 
-            $item = $this->productInfoAgent->setData($data);
+            $item = $this->productInfoAgent;
+            $item->setMessage('Test message');
+            $item->setUserId(1);
+            $item->setId(1);
+            $item->setUpdatedAt(Date('Y-m-d H:i:s'));
+            $item->setCreatedAt(Date('Y-m-d H:i:s'));
             $item->save();
 
             $output->writeln('Inserted Product ID: ');

@@ -5,9 +5,5 @@
         <resources>
             <resource ref="anonymous"/>
         </resources>
-        <data>
-            <parameter name="message" type="string" in="body"/>
-            <parameter name="productId" type="int" in="body" required="false"/>
-        </data>
     </route>
 </routes>

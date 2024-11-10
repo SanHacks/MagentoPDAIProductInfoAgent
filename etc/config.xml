@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <productinfoagent>
+            <general>
+                <enabled>1</enabled>
+                <system_prompt>You are an Online Shopping assistant named ProAgent.
+                    Answer the user's question with relevant information about the product, including:
+                    Product Info:
+                </system_prompt>
+                <selected_model>gemini</selected_model>
+                <token_quantity>500</token_quantity>
+                <allow_guests>1</allow_guests>
+                <customer_groups>1,2,3</customer_groups>
+            </general>
+        </productinfoagent>
+    </default>
+</config>

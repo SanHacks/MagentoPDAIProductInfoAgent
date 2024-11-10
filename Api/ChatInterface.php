@@ -7,8 +7,7 @@ interface ChatInterface
     /**
      * @param string $message
      * @param int $productId
-     * @param string $productName
      * @return array
      */
-    public function sendMessage(string $message,int $productId): array;
+    public function sendMessage(string $message,int $productId,int $customerId): array;
 }

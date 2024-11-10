@@ -8,9 +8,9 @@ class LargeLanguageModelApi extends BaseLLMApi
      * @param string $message
      * @param array|null $productData
      * @param string $model
-     * @return string
+     * @return array
      */
-    public function callModel(string $message,array $productData = null, string $model = ""): string
+    public function callModel(string $message,array $productData = null, string $model = ""): array
     {
         return match ($model) {
             "OpenAi" => $this->callOpenAiModel($message),

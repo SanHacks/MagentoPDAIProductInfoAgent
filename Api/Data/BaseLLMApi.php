@@ -24,8 +24,7 @@ abstract class BaseLLMApi
     public function __construct(
         LoggerInterface $logger,
         Data            $configData
-    )
-    {
+    ) {
         $this->logger = $logger;
         $this->configData = $configData;
     }
@@ -42,26 +41,33 @@ abstract class BaseLLMApi
 
     /**
      * @param string $message
-     * @return string
+     * @param array $productData
+     * @return array
      */
-    protected function callGeminiModel(string $message, $productData = ""): string
+    protected function callGeminiModel(string $message, array $productData = []): array
     {
-        if(is_array($productData)) {
-          $productData = json_encode($productData);
+        if (!is_array($productData) && empty($productData)) {
+            return [
+                'response' => 'I currently do not have product data, at the moment, please try again.',
+                'message' => $productData,
+            ];
         }
 
-        $systemPrompt = $this->configData->getSystemPrompt() ?? "
+        $productData = json_encode($productData);
+
+        $systemPrompt = $this->configData->getSystemPrompt() . $productData ?? "
          You are a Online Shopping assistant named ProAgent.
-                Answer the user's question with relevant information about the product, including:
-                Product Info:.'$productData'.
-                User question:";
+          Answer the user's question with relevant information about the product, including:
+          Product Info:";
+
+        $userQuestion = " User question:";
 
         $payload = [
             "contents" => [
                 [
                     "parts" => [
                         [
-                            "text" => $systemPrompt . $message,
+                            "text" => $systemPrompt . $productData . $userQuestion . $message,
                         ]
                     ]
                 ]
@@ -72,7 +78,7 @@ abstract class BaseLLMApi
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDdk9l0V0OKDgTTNR0Sjv71SN2VTFGeuAY', //. $this->configData->getApiKey(),
+            CURLOPT_URL => 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' . $this->configData->getApiKey(),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -94,24 +100,30 @@ abstract class BaseLLMApi
 
         $response = json_decode($response);
 
-        return $response->candidates[0]->content->parts[0]->text ?? "No response found.";
+        return [
+            'response' => $response->candidates[0]->content->parts[0]->text ?? "No response found.",
+            'prompt' => json_encode($payload),
+            'model' => 'Gemini'
+        ];
     }
 
     /**
      * @param $message
-     * @return string
+     * @return array
      */
-    protected function callOpenAiModel($message)
+    protected function callOpenAiModel($message): array
     {
         //TODO::ADD OPENAI Support
+        return [];
     }
 
     /**
      * @param $message
-     * @return string
+     * @return array
      */
-    protected function callOllamaModel($message)
+    protected function callOllamaModel($message): array
     {
         //TODO::ADD Ollama Support
+        return [];
     }
 }

@@ -41,30 +41,34 @@ class ApiDataCollection
     /**
      * @param string $message
      * @param null $productDetails
+     * @param null $customerId
      * @return string
      */
-    public function callProductAgent(string $message, $productDetails = null): string
+    public function callProductAgent(string $message, $productDetails = null, $customerId = null): string
     {
         $response = "Sorry, I am currently unable to formulate the response, to question.";
 
         if ($message) {
-            if ($productDetails) {
-                $response = $this->largeLanguageModelApi->callModel($message, $productDetails);
-            } else {
-                $response = $this->largeLanguageModelApi->callModel($message);
-            }
+            $response = $this->largeLanguageModelApi->callModel($message, $productDetails);
 
-            $this->dispatchEvent($response);
+            $eventData = [
+                'response' => $response,
+                'message' => $message,
+                'productid' => $productDetails['details']['productId'],
+                'customerid' => $customerId,
+            ];
+
+            $this->dispatchEvent($eventData);
         }
 
-        return $response;
+        return $response['response'];
     }
 
     /**
-     * @param string $eventData
+     * @param array $eventData
      * @return void
      */
-    public function dispatchEvent(string $eventData): void
+    public function dispatchEvent(array $eventData): void
     {
         $this->eventManager->dispatch(
             'product_info_agent_response_event',

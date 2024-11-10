@@ -1,0 +1,29 @@
+<?php
+/** @var $block Index */
+
+use Gundo\ProductInfoAgent\Block\Adminhtml\Index;
+
+?>
+
+<table class="data-grid">
+    <thead>
+    <tr>
+        <th><?= __('ID') ?></th>
+        <th><?= __('User ID') ?></th>
+        <th><?= __('Message') ?></th>
+        <th><?= __('Created At') ?></th>
+        <th><?= __('Updated At') ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($block->getProductInfoAgent() as $item): ?>
+        <tr>
+            <td><?= $item->getId() ?></td>
+            <td><?= $item->getUserId() ?></td>
+            <td><?= $item->getMessage() ?></td>
+            <td><?= $item->getCreatedAt() ?></td>
+            <td><?= $item->getUpdatedAt() ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

@@ -1,8 +1,14 @@
 <?php
-/** @var \Gundo\ProductInfoAgent\Block\Chat $block */
+/** @var Chat $block */
+
+use Gundo\ProductInfoAgent\Block\Chat;
+
 $product = $block->getCurrentProduct();
 $productName = $product ? $product->getName() : 'Product';
 $productId = $product ? $product->getId() : 0;
+$baseUrl = $block->agentEndpoint();
+$userId = $block->getCustomer();
+
 ?>
 
 
@@ -13,7 +19,6 @@ $productId = $product ? $product->getId() : 0;
 
     <div class="suggested-questions">
 
-        <button onclick="sendSuggestedQuestion('Tell me about this product?' . <?= $productName ?>)"><?= $productName ?></button>
         <button onclick="sendSuggestedQuestion('Tell me about this product?')">Tell me about this product?</button>
         <button onclick="sendSuggestedQuestion('What are the features?')">What are the features?</button>
         <button onclick="sendSuggestedQuestion('What complements this product?')">What complements this product?</button>
@@ -26,12 +31,12 @@ $productId = $product ? $product->getId() : 0;
     </div>
 </div>
 
-<input type="hidden" name="form_key" value="<?= $block->getFormKey() ?>" />
-
 <script>
 const chatBox = document.getElementById('chat-box');
-const chatUrl = 'https://app.m2demo.test/rest/V1/productinfoagent/message';
+const chatUrl = <?= $baseUrl ?> ;
+const currentUser = <?= $userId ?>;
 
+alert(chatUrl);
 /**
  * @param sender
  * @param message
@@ -56,6 +61,7 @@ function appendMessage(sender, message) {
  */
 function streamMessage(text, element) {
     let index = 0;
+
     const interval = setInterval(() => {
         if (index < text.length) {
             element.textContent += text[index];
@@ -66,8 +72,8 @@ function streamMessage(text, element) {
         }
     }, 40);
 }
+
 const productId = <?= json_encode($productId) ?>;
-const productName = <?= json_encode($productName) ?>;
 
 /**
  * @returns {Promise<void>}
@@ -81,7 +87,7 @@ async function sendMessage() {
 
     const loadingMessage = document.createElement('div');
     loadingMessage.classList.add('message', 'assistant');
-    loadingMessage.innerHTML = '<span class="loading">Thinking...</span>';
+    loadingMessage.innerHTML = '<span class="loading">thinking...</span>';
     chatBox.appendChild(loadingMessage);
 
     try {
@@ -93,7 +99,8 @@ async function sendMessage() {
             },
             body: JSON.stringify({
                 message: userInput,
-                productId: productId
+                productId: productId,
+                // customerId: currentUser
             }),
         });
 

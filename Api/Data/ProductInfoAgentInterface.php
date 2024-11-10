@@ -4,28 +4,22 @@ namespace Gundo\ProductInfoAgent\Api\Data;
 
 interface ProductInfoAgentInterface
 {
-    /**
-     * String constants for property names
-     */
     public const ID = "chat_id";
     public const MESSAGE = "message";
-    public const DATA = "data";
+    public const PRODUCT = "product_id";
+    public const DATA = "data_collection";
     public const UPDATED_AT = "updated_at";
     public const CREATED_AT = "created_at";
     public const USER_ID = "user_id";
     public const MODEL = "model";
 
     /**
-     * Getter for Id.
-     *
      * @return int|null
      */
     public function getChatId(): ?int;
 
     /**
-     * Setter for Id.
-     *
-     * @param int $chatId
+     * @param int|null $chatId
      * @return $this
      */
     public function setChatId(?int $chatId);
@@ -36,6 +30,7 @@ interface ProductInfoAgentInterface
      * @return string|null
      */
     public function getMessage(): ?string;
+
 
     /**
      * Setter for Message.
@@ -104,4 +99,26 @@ interface ProductInfoAgentInterface
      * @return $this
      */
     public function setModel(?string $model): self;
+
+    /**
+     * @param array|null $data
+     * @return mixed
+     */
+    public function setDataCollection(?array $data):self;
+
+    /**
+     * @return string|null
+     */
+    public function getDataCollection(): ?string;
+
+    /**
+     * @param int|null $product
+     * @return self
+     */
+    public function setProductId(?int $product):self;
+
+    /**
+     * @return string|null
+     */
+    public function getProductId(): ?string;
 }
